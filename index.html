@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacBook Setup for CS Students</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --border: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d29922;
+            --accent-purple: #bc8cff;
+            --accent-red: #f85149;
+            --code-bg: #0d1117;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+        }
+        .topbar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .topbar-logo {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        .progress-wrap { flex: 1; max-width: 280px; }
+        .progress-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+            text-align: right;
+        }
+        .progress-track {
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.35s ease;
+        }
+        .topbar-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 5rem 1.5rem 3.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(88, 166, 255, 0.08);
+            border: 1px solid rgba(88, 166, 255, 0.25);
+            color: var(--accent-blue);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.875rem;
+            border-radius: 100px;
+            margin-bottom: 1.75rem;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            background: linear-gradient(160deg, #e6edf3 30%, #58a6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 2.25rem;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: var(--accent-blue);
+            color: #0d1117;
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 0.75rem 1.625rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .hero-cta:hover { opacity: 0.85; }
+
+        /* ── Layout ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+            align-items: start;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: sticky;
+            top: 60px;
+        }
+        .sidebar-heading {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.625rem;
+        }
+        .sidebar-nav { list-style: none; }
+        .sidebar-nav li { margin-bottom: 0.1rem; }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.825rem;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+        }
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        .sidebar-nav a.done { color: var(--accent-green); }
+        .step-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .sidebar-nav a.done .step-dot {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #0d1117;
+        }
+
+        /* ── Step cards ── */
+        .step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.875rem 2rem;
+            margin-bottom: 1.25rem;
+            scroll-margin-top: 76px;
+            transition: border-color 0.25s;
+        }
+        .step.done-card { border-color: rgba(63, 185, 80, 0.35); }
+
+        .step-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.375rem;
+        }
+        .step-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+        .step-meta { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.2rem; }
+        .step-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-blue);
+        }
+        .chip {
+            font-size: 0.67rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+        }
+        .chip.optional {
+            color: var(--accent-orange);
+            border-color: rgba(210, 153, 34, 0.35);
+            background: rgba(210, 153, 34, 0.07);
+        }
+        .step h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* ── Info boxes ── */
+        .box {
+            border-radius: 8px;
+            padding: 0.875rem 1.125rem;
+            margin-bottom: 1.125rem;
+            font-size: 0.875rem;
+        }
+        .box p, .box { color: var(--text-secondary); }
+        .box-label {
+            font-size: 0.67rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.3rem;
+        }
+        .box.what  { background: rgba(88,166,255,0.07); border-left: 3px solid var(--accent-blue); }
+        .box.why   { background: rgba(63,185,80,0.07);  border-left: 3px solid var(--accent-green); }
+        .box.warn  { background: rgba(210,153,34,0.07); border-left: 3px solid var(--accent-orange); }
+        .box.tip   { background: rgba(188,140,255,0.07);border-left: 3px solid var(--accent-purple); }
+        .box.what  .box-label { color: var(--accent-blue); }
+        .box.why   .box-label { color: var(--accent-green); }
+        .box.warn  .box-label { color: var(--accent-orange); }
+        .box.tip   .box-label { color: var(--accent-purple); }
+
+        /* ── Steps list ── */
+        .steps {
+            counter-reset: steps;
+            list-style: none;
+            margin: 1.125rem 0;
+        }
+        .steps li {
+            counter-increment: steps;
+            position: relative;
+            padding-left: 2.375rem;
+            margin-bottom: 1.1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        .steps li::before {
+            content: counter(steps);
+            position: absolute;
+            left: 0; top: 1px;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .steps li strong { color: var(--text-primary); }
+        .steps li em { color: var(--text-muted); font-style: normal; font-size: 0.8rem; }
+
+        /* ── Code blocks ── */
+        .cb {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0.6rem 0;
+        }
+        .cb-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.45rem 0.875rem;
+            background: rgba(255,255,255,0.025);
+            border-bottom: 1px solid var(--border);
+        }
+        .cb-lang {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+        }
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.67rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .copy-btn:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+        .copy-btn.ok { color: var(--accent-green); border-color: var(--accent-green); }
+        .cb pre {
+            padding: 0.875rem 1.125rem;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.83rem;
+            line-height: 1.65;
+            color: #e6edf3;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .p  { color: #3fb950; user-select: none; }   /* prompt $ */
+        .cm { color: #6e7681; }                        /* comment */
+
+        /* ── Verify block ── */
+        .verify {
+            background: rgba(63,185,80,0.05);
+            border: 1px solid rgba(63,185,80,0.2);
+            border-radius: 8px;
+            padding: 0.875rem 1.125rem;
+            margin-top: 1.125rem;
+        }
+        .verify-title {
+            font-size: 0.67rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-green);
+            margin-bottom: 0.4rem;
+        }
+        .verify p { font-size: 0.875rem; color: var(--text-secondary); }
+        .expected {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 0.875rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        .expected .hl { color: var(--accent-green); }
+
+        /* ── Mark done row ── */
+        .done-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.375rem;
+            padding-top: 1.375rem;
+            border-top: 1px solid var(--border);
+        }
+        .done-row input[type=checkbox] {
+            width: 16px; height: 16px;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .done-row label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* ── Inline code ── */
+        code {
+            background: rgba(88,166,255,0.1);
+            border: 1px solid rgba(88,166,255,0.2);
+            border-radius: 4px;
+            padding: 0.12em 0.4em;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.83em;
+            color: var(--accent-blue);
+        }
+
+        /* ── Extension list ── */
+        .ext-list { list-style: none; margin-top: 0.75rem; }
+        .ext-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.45rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .ext-tag {
+            background: rgba(88,166,255,0.12);
+            border: 1px solid rgba(88,166,255,0.25);
+            color: var(--accent-blue);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.55rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 2.25rem 1.5rem;
+        }
+        footer p { font-size: 0.8rem; color: var(--text-muted); }
+        footer .big { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+        /* ── Responsive ── */
+        @media (max-width: 760px) {
+            .layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .hero-stats { gap: 1.5rem; }
+            .step { padding: 1.375rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ────────── TOP BAR ────────── -->
+<nav class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-logo">💻 CS Setup Guide</span>
+        <div class="progress-wrap">
+            <div class="progress-label" id="progress-label">0 of 9 steps completed</div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        <span class="topbar-time">~45 min total</span>
+    </div>
+</nav>
+
+<!-- ────────── HERO ────────── -->
+<header class="hero">
+    <div class="hero-badge">✦ For Freshman CS Students</div>
+    <h1>MacBook Setup<br>for CS Essentials</h1>
+    <p class="hero-sub">A step-by-step guide to get your Mac ready for Python, Java, and C++ — no prior Terminal experience needed.</p>
+    <div class="hero-stats">
+        <div>
+            <span class="stat-value">9</span>
+            <div class="stat-label">Steps to complete</div>
+        </div>
+        <div>
+            <span class="stat-value">~45</span>
+            <div class="stat-label">Minutes total</div>
+        </div>
+        <div>
+            <span class="stat-value">0</span>
+            <div class="stat-label">Prior experience needed</div>
+        </div>
+    </div>
+    <a href="#step-0" class="hero-cta">Get Started &rarr;</a>
+</header>
+
+<!-- ────────── MAIN LAYOUT ────────── -->
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-heading">On this page</div>
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li><a href="#step-0"><span class="step-dot" id="dot-0">0</span>Before You Begin</a></li>
+            <li><a href="#step-1"><span class="step-dot" id="dot-1">1</span>Xcode Tools</a></li>
+            <li><a href="#step-2"><span class="step-dot" id="dot-2">2</span>Homebrew</a></li>
+            <li><a href="#step-3"><span class="step-dot" id="dot-3">3</span>Git</a></li>
+            <li><a href="#step-4"><span class="step-dot" id="dot-4">4</span>GitHub</a></li>
+            <li><a href="#step-5"><span class="step-dot" id="dot-5">5</span>VS Code</a></li>
+            <li><a href="#step-6"><span class="step-dot" id="dot-6">6</span>Python 3</a></li>
+            <li><a href="#step-7"><span class="step-dot" id="dot-7">7</span>Java (JDK)</a></li>
+            <li><a href="#step-8"><span class="step-dot" id="dot-8">8</span>C++</a></li>
+            <li><a href="#step-9"><span class="step-dot" id="dot-9">✦</span>Oh My Zsh</a></li>
+        </ul>
+    </aside>
+
+    <!-- Content -->
+    <main>
+
+        <!-- ── Step 0: Before You Begin ── -->
+        <section class="step" id="step-0">
+            <div class="step-top">
+                <div class="step-emoji">🗺️</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Before You Begin</span>
+                        <span class="chip">2 min read</span>
+                    </div>
+                    <h2>What You Need to Know First</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">The Terminal</div>
+                <p>Throughout this guide you'll use an app called <strong>Terminal</strong>. Open it with <code>⌘ Space</code>, type <em>Terminal</em>, and press Enter. It's a text-based way to talk to your Mac — much more powerful than clicking around. Don't worry, we'll tell you exactly what to type every step of the way.</p>
+            </div>
+
+            <div class="box warn">
+                <div class="box-label">Prerequisites</div>
+                <p>Make sure your Mac is plugged in and has at least <strong>10 GB of free space</strong>. Check under <strong>Apple menu → About This Mac → More Info → Storage</strong>. Also make sure macOS is up to date (Ventura 13+ or Sonoma 14+ is ideal).</p>
+            </div>
+
+            <div class="box tip">
+                <div class="box-label">Good to know</div>
+                <p>When you paste a command into Terminal and press Enter, it might look like nothing is happening — that's normal. Some commands just take time. When it's finished, you'll see the <code>$</code> prompt reappear. Also: when typing your Mac password in Terminal, <strong>no characters will show up</strong> — that's a security feature, just keep typing and press Enter.</p>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-0" data-idx="0">
+                <label for="ck-0">I've read this — ready to go</label>
+            </div>
+        </section>
+
+        <!-- ── Step 1: Xcode CLT ── -->
+        <section class="step" id="step-1">
+            <div class="step-top">
+                <div class="step-emoji">🔧</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 1</span>
+                        <span class="chip">~5–15 min</span>
+                    </div>
+                    <h2>Xcode Command Line Tools</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>A free package from Apple that includes compilers and build tools. Think of it as the foundation — almost every other tool on this list requires it first.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>Without it, Homebrew won't install, Git won't work, and you can't compile C++ programs. It's the bedrock of Mac development, and it's free.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Open Terminal.</strong> Press <code>⌘ Space</code>, type <code>Terminal</code>, press Enter.</li>
+                <li><strong>Run this command:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>xcode-select --install</pre>
+                    </div>
+                </li>
+                <li><strong>A popup will appear.</strong> Click <strong>Install</strong>, then <strong>Agree</strong> to the license.</li>
+                <li><strong>Wait for it to finish.</strong> This takes 5–15 minutes depending on your internet speed. Your Mac needs to stay awake and connected.</li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <p>Run this — if you see a version number, you're good.</p>
+                <div class="cb" style="margin-top:.5rem">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>xcode-select --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">xcode-select version 2395.</span> <em style="color:var(--text-muted)">(number may vary)</em></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-1" data-idx="1">
+                <label for="ck-1">Step 1 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 2: Homebrew ── -->
+        <section class="step" id="step-2">
+            <div class="step-top">
+                <div class="step-emoji">🍺</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 2</span>
+                        <span class="chip">~3 min</span>
+                    </div>
+                    <h2>Homebrew</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>Homebrew is a <em>package manager</em> — basically an app store for your Terminal. Instead of hunting down installers from websites, you type one command and Homebrew installs the software for you automatically.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>You'll use Homebrew to install Git, Python, Java, and almost everything else in this guide. It's the single most useful tool on a developer's Mac, used by professionals worldwide.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Paste this into Terminal and press Enter.</strong> It's one long command — copy the whole thing at once using the button.
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+                    </div>
+                </li>
+                <li><strong>Enter your Mac password when asked.</strong> Characters won't appear — just type it and press Enter.</li>
+                <li><strong>If you see a message about adding Homebrew to your PATH</strong> (usually on M1/M2/M3 Macs), copy and run the two commands it shows you — they look like <code>echo '...'</code> and <code>eval "$(..."</code>. This step is important!</li>
+            </ol>
+
+            <div class="box warn">
+                <div class="box-label">Apple Silicon (M1 / M2 / M3) users</div>
+                <p>Check <strong>Apple menu → About This Mac</strong>. If you see "Apple M1" (or M2/M3), you have Apple Silicon. Homebrew installs to <code>/opt/homebrew</code> instead of the usual path. Follow the PATH instructions that Homebrew prints after install — don't skip them.</p>
+            </div>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>brew --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">Homebrew 4.x.x</span></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-2" data-idx="2">
+                <label for="ck-2">Step 2 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 3: Git ── -->
+        <section class="step" id="step-3">
+            <div class="step-top">
+                <div class="step-emoji">🌿</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 3</span>
+                        <span class="chip">~2 min</span>
+                    </div>
+                    <h2>Git</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>Git is a <em>version control system</em> — it keeps track of every change you make to your code. Think of it as an "undo history" on steroids: you can go back to any previous version, work on multiple features at once, and collaborate without overwriting each other's work.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>Every CS course will expect you to know Git. It's also considered a basic skill by every employer in tech. You'll use it to submit assignments and collaborate on group projects.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Install Git via Homebrew:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>brew install git</pre>
+                    </div>
+                </li>
+                <li><strong>Set your name</strong> (appears on your commits — use your real name):
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>git config --global user.name "Your Full Name"</pre>
+                    </div>
+                </li>
+                <li><strong>Set your email</strong> (use the same email you'll use for GitHub):
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>git config --global user.email "you@example.com"</pre>
+                    </div>
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>git --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">git version 2.x.x</span></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-3" data-idx="3">
+                <label for="ck-3">Step 3 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 4: GitHub ── -->
+        <section class="step" id="step-4">
+            <div class="step-top">
+                <div class="step-emoji">🐙</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 4</span>
+                        <span class="chip">~5 min</span>
+                    </div>
+                    <h2>GitHub Account</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>GitHub is a website that stores your Git code repositories in the cloud — like Google Drive, but built specifically for code. It's what essentially every software team in the world uses to collaborate.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>Professors often require GitHub for assignment submissions. It also serves as your public coding portfolio — future employers and internship programs will look at it.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Create a free account</strong> at <code>github.com</code> if you don't already have one. Use your university email address.</li>
+                <li><strong>Install the GitHub CLI</strong> — this lets you connect your Mac to GitHub from the Terminal:
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>brew install gh</pre>
+                    </div>
+                </li>
+                <li><strong>Log in to GitHub from Terminal:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>gh auth login</pre>
+                    </div>
+                    When prompted: choose <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (authenticate with browser). A browser tab will open — click Authorize.
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>gh auth status</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">✓ Logged in to github.com as YourUsername</span></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-4" data-idx="4">
+                <label for="ck-4">Step 4 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 5: VS Code ── -->
+        <section class="step" id="step-5">
+            <div class="step-top">
+                <div class="step-emoji">🖊️</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 5</span>
+                        <span class="chip">~5 min</span>
+                    </div>
+                    <h2>Visual Studio Code</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>VS Code is a free, powerful code editor made by Microsoft. It's the most popular editor in the world and natively supports Python, Java, C++, and essentially every language you'll encounter in your CS program.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>A proper editor makes coding dramatically easier — syntax highlighting, autocomplete, error detection, a built-in Terminal, and Git integration all in one place.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Install VS Code via Homebrew:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>brew install --cask visual-studio-code</pre>
+                    </div>
+                </li>
+                <li><strong>Open VS Code</strong> from your Applications folder (or Spotlight: <code>⌘ Space</code> → "VS Code").</li>
+                <li><strong>Enable the <code>code</code> command.</strong> Inside VS Code, press <code>⌘ Shift P</code>, type <em>Shell Command</em>, and select <strong>"Install 'code' command in PATH"</strong>. Now you can type <code>code .</code> in Terminal to open any folder instantly.</li>
+                <li><strong>Install these essential extensions.</strong> Click the Extensions icon (four squares on the left sidebar), search for each name, and click Install:
+                    <ul class="ext-list">
+                        <li><span class="ext-tag">Python</span> by Microsoft — run and debug Python files</li>
+                        <li><span class="ext-tag">Extension Pack for Java</span> by Microsoft — full Java support</li>
+                        <li><span class="ext-tag">C/C++</span> by Microsoft — C and C++ highlighting and debugging</li>
+                        <li><span class="ext-tag">GitLens</span> by GitKraken — see Git history inside your editor</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <p>Open Terminal and run:</p>
+                <div class="cb" style="margin-top:.5rem">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>code --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">1.xx.x</span> (any version number)</div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-5" data-idx="5">
+                <label for="ck-5">Step 5 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 6: Python 3 ── -->
+        <section class="step" id="step-6">
+            <div class="step-top">
+                <div class="step-emoji">🐍</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 6</span>
+                        <span class="chip">~2 min</span>
+                    </div>
+                    <h2>Python 3</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>Python is a beginner-friendly programming language that reads almost like plain English. It's the most popular first language in CS programs worldwide, and it's widely used in AI, data science, web development, and scripting.</p>
+            </div>
+
+            <div class="box warn">
+                <div class="box-label">Wait — doesn't my Mac already have Python?</div>
+                <p>Macs come with Python 2 (very old and no longer supported) or a non-functional stub. We're installing <strong>Python 3</strong> — the current version. On your Mac, always use <code>python3</code>, not <code>python</code>.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Install Python 3 via Homebrew:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>brew install python3</pre>
+                    </div>
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>python3 --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">Python 3.12.x</span> &nbsp;<em style="color:var(--text-muted)">(3.10 or higher is fine)</em></div>
+                <p style="margin-top:.75rem">Try running a quick test:</p>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>python3 -c "print('Hello, CS!')"</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">Hello, CS!</span></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-6" data-idx="6">
+                <label for="ck-6">Step 6 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 7: Java ── -->
+        <section class="step" id="step-7">
+            <div class="step-top">
+                <div class="step-emoji">☕</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 7</span>
+                        <span class="chip">~3 min</span>
+                    </div>
+                    <h2>Java (OpenJDK)</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>Java is a foundational programming language heavily used in CS courses for data structures, algorithms, and object-oriented programming. The JDK (Java Development Kit) is what lets you write and run Java programs on your Mac.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Install OpenJDK</strong> (the free, open-source version of Java):
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>brew install openjdk</pre>
+                    </div>
+                </li>
+                <li><strong>Add Java to your PATH</strong> so Terminal can find it. Run both commands:
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+<span class="p">$ </span>source ~/.zshrc</pre>
+                    </div>
+                    <em>If you have an Intel Mac (not M-series), replace <code>/opt/homebrew</code> with <code>/usr/local</code>.</em>
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>java --version</pre>
+                </div>
+                <div class="expected">Expected: <span class="hl">openjdk 21.x.x</span> <em style="color:var(--text-muted)">(or similar — any version is fine)</em></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-7" data-idx="7">
+                <label for="ck-7">Step 7 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 8: C++ ── -->
+        <section class="step" id="step-8">
+            <div class="step-top">
+                <div class="step-emoji">⚡</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Step 8</span>
+                        <span class="chip">~1 min</span>
+                    </div>
+                    <h2>C++</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>C++ is a powerful, fast language used in systems programming, game development, and performance-critical software. It's commonly used in CS courses to teach memory management, pointers, and low-level concepts.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Good news!</div>
+                <p>If you completed Step 1 (Xcode Command Line Tools), you already have a C++ compiler installed — it's called <code>clang++</code>. No extra downloads needed.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Verify your compiler is available:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>clang++ --version</pre>
+                    </div>
+                </li>
+                <li><strong>Create an alias</strong> so <code>g++</code> also works (some professors use this name):
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>echo 'alias g++="clang++"' >> ~/.zshrc && source ~/.zshrc</pre>
+                    </div>
+                </li>
+                <li><strong>Test it</strong> — let's compile a real C++ program:
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>echo '#include &lt;iostream&gt;
+int main(){std::cout&lt;&lt;"Hello, C++!"&lt;&lt;std::endl;}' > test.cpp
+<span class="p">$ </span>clang++ test.cpp -o test && ./test</pre>
+                    </div>
+                </li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="expected">Expected output: <span class="hl">Hello, C++!</span></div>
+                <p style="margin-top:.5rem; font-size:0.8rem">Clean up the test file when you're done:</p>
+                <div class="cb">
+                    <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <pre><span class="p">$ </span>rm test.cpp test</pre>
+                </div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-8" data-idx="8">
+                <label for="ck-8">Step 8 complete</label>
+            </div>
+        </section>
+
+        <!-- ── Step 9: Oh My Zsh (Optional) ── -->
+        <section class="step" id="step-9">
+            <div class="step-top">
+                <div class="step-emoji">✨</div>
+                <div>
+                    <div class="step-meta">
+                        <span class="step-label">Bonus Step</span>
+                        <span class="chip">~3 min</span>
+                        <span class="chip optional">Optional</span>
+                    </div>
+                    <h2>Oh My Zsh</h2>
+                </div>
+            </div>
+
+            <div class="box what">
+                <div class="box-label">What is this?</div>
+                <p>Oh My Zsh upgrades your Terminal experience with colors, autocomplete suggestions, Git branch names in your prompt, and other quality-of-life improvements. It's not required, but most CS students install it eventually — and you'll wonder how you lived without it.</p>
+            </div>
+
+            <ol class="steps">
+                <li><strong>Install Oh My Zsh:</strong>
+                    <div class="cb">
+                        <div class="cb-head"><span class="cb-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre><span class="p">$ </span>sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</pre>
+                    </div>
+                </li>
+                <li>When asked if you want to change your default shell, type <code>Y</code> and press Enter.</li>
+                <li><strong>Close Terminal and reopen it</strong> — your new colorful prompt will appear.</li>
+            </ol>
+
+            <div class="verify">
+                <div class="verify-title">✓ Verify it worked</div>
+                <div class="expected">Your Terminal prompt should now show something like: <span class="hl">➜  ~</span></div>
+            </div>
+
+            <div class="done-row">
+                <input type="checkbox" id="ck-9" data-idx="9">
+                <label for="ck-9">Bonus step complete</label>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ────────── FOOTER ────────── -->
+<footer>
+    <div class="big">🎉</div>
+    <p style="font-size:1rem; color:var(--text-secondary); margin-bottom:.5rem">You're all set. Welcome to CS.</p>
+    <p>MacBook CS Setup Guide &nbsp;·&nbsp; Technical Communication</p>
+</footer>
+
+<!-- ────────── SCRIPTS ────────── -->
+<script>
+    const TOTAL = 10;
+
+    function updateProgress() {
+        const boxes = document.querySelectorAll('input.ck');
+        const done  = [...boxes].filter(b => b.checked).length;
+        const pct   = (done / TOTAL) * 100;
+
+        document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('progress-label').textContent =
+            done === TOTAL ? '🎉 All steps complete!' : `${done} of ${TOTAL} steps completed`;
+
+        boxes.forEach(b => {
+            const i   = b.dataset.idx;
+            const dot = document.getElementById('dot-' + i);
+            const link = document.querySelector(`.sidebar-nav a[href="#step-${i}"]`);
+            const card = document.getElementById('step-' + i);
+
+            if (b.checked) {
+                dot && (dot.textContent = '✓');
+                link?.classList.add('done');
+                card?.classList.add('done-card');
+            } else {
+                dot && (dot.textContent = i === '9' ? '✦' : i);
+                link?.classList.remove('done');
+                card?.classList.remove('done-card');
+            }
+        });
+
+        // persist
+        const state = {};
+        boxes.forEach(b => state[b.id] = b.checked);
+        try { localStorage.setItem('cs-setup', JSON.stringify(state)); } catch(e) {}
+    }
+
+    function loadProgress() {
+        try {
+            const raw = localStorage.getItem('cs-setup');
+            if (!raw) return;
+            const state = JSON.parse(raw);
+            document.querySelectorAll('input.ck').forEach(b => {
+                if (state[b.id]) b.checked = true;
+            });
+        } catch(e) {}
+        updateProgress();
+    }
+
+    function copyCode(btn) {
+        const pre  = btn.closest('.cb').querySelector('pre');
+        const text = pre.innerText.replace(/^\$ /gm, '').trim();
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('ok');
+            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1600);
+        }).catch(() => {
+            btn.textContent = 'Failed';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+        });
+    }
+
+    // Attach listeners — note: checkboxes use class "ck" for the JS selector
+    document.querySelectorAll('input[type=checkbox]').forEach(b => {
+        b.classList.add('ck');
+        b.addEventListener('change', updateProgress);
+    });
+
+    // Scroll spy for sidebar
+    const sections = document.querySelectorAll('.step');
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const id = e.target.id;
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                document.querySelector(`.sidebar-nav a[href="#${id}"]`)?.classList.add('active');
+            }
+        });
+    }, { threshold: 0.25 });
+    sections.forEach(s => io.observe(s));
+
+    loadProgress();
+</script>
+</body>
+</html>
