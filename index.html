@@ -19,6 +19,24 @@
             --accent-purple: #bc8cff;
         }
 
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --bg-card: #ffffff;
+            --border: #d0d7de;
+            --text-primary: #1f2328;
+            --text-secondary: #57606a;
+            --text-muted: #6e7781;
+            --accent-blue: #0969da;
+            --accent-green: #1a7f37;
+            --accent-orange: #9a6700;
+            --accent-purple: #8250df;
+        }
+        [data-theme="light"] .step { box-shadow: 0 1px 3px rgba(31,35,40,0.08); }
+        [data-theme="light"] .cb, [data-theme="light"] .expected { background: #f6f8fa; }
+        [data-theme="light"] .cb pre { color: #1f2328; }
+        [data-theme="light"] .hero h1 { background: linear-gradient(160deg, #1f2328 30%, #0969da 100%); -webkit-background-clip: text; background-clip: text; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -26,6 +44,7 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.65;
+            transition: background-color 0.2s, color 0.2s;
         }
 
         /* ── Top bar ── */
@@ -51,6 +70,21 @@
         .progress-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--accent-green); border-radius: 2px; width: 0%; transition: width 0.35s ease; }
         .topbar-time { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .theme-toggle:hover { color: var(--text-primary); border-color: var(--text-secondary); }
 
         /* ── Mobile step nav ── */
         .mobile-stepnav {
@@ -262,6 +296,25 @@
         .done-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent-green); cursor: pointer; flex-shrink: 0; }
         .done-row label { font-size: 0.875rem; color: var(--text-secondary); cursor: pointer; user-select: none; }
 
+        /* ── Screenshots ── */
+        .screenshot { margin: 0.875rem 0; }
+        .screenshot img { display: block; width: 100%; border-radius: 8px; border: 1px solid var(--border); }
+        .screenshot .placeholder {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 2.5rem 1.5rem;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .screenshot .placeholder .ph-icon { font-size: 1.75rem; }
+        .screenshot .caption { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem; text-align: center; }
+
         /* ── Inline code ── */
         code { background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); border-radius: 4px; padding: 0.12em 0.4em; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.83em; color: var(--accent-blue); }
 
@@ -332,6 +385,7 @@
             <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
         <span class="topbar-time">~30 min total</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode" onclick="toggleTheme()">🌙</button>
     </div>
 </nav>
 
@@ -408,6 +462,11 @@
             <div class="box what">
                 <div class="box-label">The Terminal</div>
                 <p>Throughout this guide you will use an app called <strong>Terminal</strong>. Open it by pressing <code>⌘ Space</code>, typing <em>Terminal</em>, and pressing Enter. It is a text-based way to talk to your Mac and far more powerful than clicking around. Do not worry; we will tell you exactly what to type every step of the way.</p>
+                <div class="screenshot">
+                    <img src="images/terminal-app.png" alt="The Terminal app open on a Mac showing the command prompt" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="placeholder"><span class="ph-icon">🖼️</span><span>Screenshot coming soon: images/terminal-app.png</span></div>
+                    <div class="caption">What the Terminal app looks like once it's open</div>
+                </div>
             </div>
 
             <div class="box warn">
@@ -446,7 +505,17 @@
 
             <div class="box why">
                 <div class="box-label">Why do I need it?</div>
-                <p>You will use Homebrew to install Git, Python, Java, and almost everything else in this guide. It is the single most useful tool on a developer's Mac, used by professionals worldwide. As a bonus, Homebrew also installs the required macOS developer tools automatically if they are not already on your machine.</p>
+                <p>You will use Homebrew to install Git, Python, Java, and almost everything else in this guide. It is the single most useful tool on a developer's Mac, used by professionals worldwide. As a bonus, Homebrew also installs the required macOS developer tools automatically if they are not already on your machine. In your intro CS courses, whenever a professor says "just install X," Homebrew is usually the fastest way to get it running.</p>
+            </div>
+
+            <div class="box warn">
+                <div class="box-label">Apple Silicon (M1 / M2 / M3) users, check this first</div>
+                <p>Check <strong>Apple menu &rarr; About This Mac</strong>. If you see an Apple M-series chip listed, Homebrew will install to <code>/opt/homebrew</code> instead of the usual path. Keep this in mind for Step 3 below; you will need to follow the PATH instructions that Homebrew prints after the install completes.</p>
+            </div>
+
+            <div class="box tip">
+                <div class="box-label">What does this command actually do?</div>
+                <p>It downloads Homebrew's official install script from GitHub and runs it. That script asks for your admin password because it needs permission to create folders on your Mac that Homebrew will manage. If you would rather read the script before running it, the source is publicly viewable at the URL inside the command. This is the standard, official way to install Homebrew and is the same command listed on <a href="https://brew.sh" style="color:var(--accent-blue)">brew.sh</a>.</p>
             </div>
 
             <ol class="steps">
@@ -457,13 +526,14 @@
                     </div>
                 </li>
                 <li><strong>Enter your Mac password when asked.</strong> Characters will not appear as you type; just type your password and press Enter.</li>
-                <li><strong>If you see a message about adding Homebrew to your PATH</strong>, copy and run the two commands it shows you. They look like <code>echo '...'</code> and <code>eval "$(..."</code>. This step is important and should not be skipped.</li>
+                <li><strong>If you see a message about adding Homebrew to your PATH</strong>, copy and run the two commands it shows you. They look like <code>echo '...'</code> and <code>eval "$(..."</code>. This step is important and should not be skipped. (This is the Apple Silicon PATH step mentioned above.)
+                    <div class="screenshot">
+                        <img src="images/homebrew-path.png" alt="Terminal showing the Homebrew Next Steps message with PATH commands to run" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="placeholder"><span class="ph-icon">🖼️</span><span>Screenshot coming soon: images/homebrew-path.png</span></div>
+                        <div class="caption">The "Next steps" message Homebrew prints after installing</div>
+                    </div>
+                </li>
             </ol>
-
-            <div class="box warn">
-                <div class="box-label">Apple Silicon (M1 / M2 / M3) users</div>
-                <p>Check <strong>Apple menu &rarr; About This Mac</strong>. If you see an Apple M-series chip listed, Homebrew installs to <code>/opt/homebrew</code> instead of the usual path. Follow the PATH instructions that Homebrew prints after the install completes.</p>
-            </div>
 
             <div class="verify">
                 <div class="verify-title">✓ Verify it worked</div>
@@ -500,7 +570,7 @@
 
             <div class="box why">
                 <div class="box-label">Why do I need it?</div>
-                <p>Every CS course will eventually expect you to know Git. It is also considered a basic skill by every employer in tech, and you will use it to submit assignments and collaborate on group projects.</p>
+                <p>Every CS course will eventually expect you to know Git. It is also considered a basic skill by every employer in tech, and you will use it to submit assignments and collaborate on group projects. Expect to see it in almost every programming class after your first semester, especially group projects.</p>
             </div>
 
             <ol class="steps">
@@ -533,6 +603,18 @@
                 <div class="expected">Expected: <span class="hl">git version 2.x.x</span></div>
             </div>
 
+            <div class="box tip">
+                <div class="box-label">A quick preview of how Git is actually used</div>
+                <p>This step only installs and configures Git; it does not teach you the daily workflow. Once you have a project folder, the basic loop looks like this (nothing to run yet, just for reference):</p>
+                <div class="cb" style="margin-top:.6rem">
+                    <div class="cb-head"><span class="cb-lang">Example</span></div>
+                    <pre><span class="p">$ </span>git add .
+<span class="p">$ </span>git commit -m "describe what you changed"
+<span class="p">$ </span>git push</pre>
+                </div>
+                <p style="margin-top:.6rem">Git is deep enough to deserve its own guide. For a proper walkthrough, see <a href="https://git-scm.com/book/en/v2/Getting-Started-Git-Basics" style="color:var(--accent-blue)">Git Basics from the official Git book</a> or GitHub's own <a href="https://docs.github.com/en/get-started/using-git" style="color:var(--accent-blue)">Using Git guide</a>.</p>
+            </div>
+
             <div class="done-row">
                 <input type="checkbox" id="ck-2" data-idx="2">
                 <label for="ck-2">Step 2 complete</label>
@@ -559,7 +641,7 @@
 
             <div class="box why">
                 <div class="box-label">Why do I need it?</div>
-                <p>Professors often require GitHub for assignment submissions. It is also your public coding portfolio, and future employers and internship programs will look at it.</p>
+                <p>Professors often require GitHub for assignment submissions. It is also your public coding portfolio, and future employers and internship programs will look at it. Many CS courses have you submit homework by pushing to a class GitHub repository, so this account is not optional for long.</p>
             </div>
 
             <ol class="steps">
@@ -578,6 +660,11 @@
                     When prompted, choose <strong>GitHub.com</strong>, then <strong>HTTPS</strong>, then authenticate via browser. A browser tab will open; click Authorize.
                 </li>
             </ol>
+
+            <div class="box tip">
+                <div class="box-label">What is this command actually doing?</div>
+                <p><code>gh auth login</code> never asks for or sees your GitHub password. It opens your browser and lets GitHub itself generate a secure, revocable access token that only your Terminal uses. You can review or revoke that access anytime under your GitHub account's <strong>Settings &rarr; Applications</strong>.</p>
+            </div>
 
             <div class="verify">
                 <div class="verify-title">✓ Verify it worked</div>
@@ -614,7 +701,7 @@
 
             <div class="box why">
                 <div class="box-label">Why do I need it?</div>
-                <p>A proper editor makes coding dramatically easier, with syntax highlighting, autocomplete, error detection, a built-in Terminal, and Git integration all in one place.</p>
+                <p>A proper editor makes coding dramatically easier, with syntax highlighting, autocomplete, error detection, a built-in Terminal, and Git integration all in one place. This is likely the editor you will use in nearly every programming assignment across your degree, regardless of which language a course focuses on.</p>
             </div>
 
             <ol class="steps">
@@ -633,6 +720,11 @@
                         <li><span class="ext-tag">C/C++</span> by Microsoft — C and C++ highlighting and debugging</li>
                         <li><span class="ext-tag">GitLens</span> by GitKraken — see Git history right inside your editor</li>
                     </ul>
+                    <div class="screenshot">
+                        <img src="images/vscode-extensions.png" alt="VS Code Extensions panel with the recommended extensions installed" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="placeholder"><span class="ph-icon">🖼️</span><span>Screenshot coming soon: images/vscode-extensions.png</span></div>
+                        <div class="caption">The Extensions panel with all four extensions installed</div>
+                    </div>
                 </li>
             </ol>
 
@@ -668,6 +760,11 @@
             <div class="box what">
                 <div class="box-label">What is this?</div>
                 <p>Python is a beginner-friendly programming language that reads almost like plain English. It is the most popular first language in CS programs worldwide and is widely used in AI, data science, web development, and scripting.</p>
+            </div>
+
+            <div class="box why">
+                <div class="box-label">Why do I need it?</div>
+                <p>Most intro-to-programming courses (often labeled CS 101 or similar) are taught in Python because its simple syntax lets you focus on logic instead of fighting the language. You will likely write your very first "real" program in Python.</p>
             </div>
 
             <div class="box warn">
@@ -927,6 +1024,25 @@ int main(){std::cout&lt;&lt;"Hello, C++!"&lt;&lt;std::endl;}' > test.cpp
             setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
         });
     }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const btn = document.getElementById('theme-toggle');
+        if (btn) btn.textContent = theme === 'light' ? '☀️' : '🌙';
+        try { localStorage.setItem('cs-setup-theme', theme); } catch(e) {}
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    (function initTheme() {
+        let saved = null;
+        try { saved = localStorage.getItem('cs-setup-theme'); } catch(e) {}
+        const preferred = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        applyTheme(preferred);
+    })();
 
     document.querySelectorAll('input[type=checkbox]').forEach(b => {
         b.classList.add('ck');
